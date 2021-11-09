@@ -13,34 +13,15 @@ class Base_model extends CI_Model
         }
     }
 
-    public function joinCategory($order,$where){
+    public function joinBarang(){
         $this->db->select('*');
-        $this->db->from('cash_balance');
-        $this->db->join('categori','categori.id_categori = cash_balance.category');
-        $this->db->order_by($order, 'DESC');   
-        $this->db->where($where);   
+        $this->db->from('transaksi');
+        $this->db->join('barang','barang.id_barang = transaksi.id_barang');
         $query = $this->db->get();
         return $query;
      }
 
-     public function joinCategory2($order, $where, $range = null){
-        $this->db->select('*');
-        $this->db->from('cash_balance');
-        $this->db->join('categori','categori.id_categori = cash_balance.category');
-        $this->db->join('user','user.id_user = cash_balance.id_user');
-        $this->db->order_by($order, 'DESC');   
-        $this->db->where($where);   
-
-        if ($range != null) {
-            $this->db->where('date' . ' >=', $range['mulai']);
-            $this->db->where('date' . ' <=', $range['akhir']);
-        }
-        // return $this->db->get('barang_masuk bm')->result_array();
-        $query = $this->db->get()->result_array();
-        return $query;
-     }
-
-    public function getUsers($id)
+    public function getBarangById($id_barang)
     {
         /**
          * ID disini adalah untuk data yang tidak ingin ditampilkan. 
@@ -48,8 +29,12 @@ class Base_model extends CI_Model
          * tidak ingin menampilkan data user yang digunakan, 
          * pada managemen data user
          */
-        $this->db->where('id_user !=', $id);
-        return $this->db->get('user')->result_array();
+        $this->db->select('*');
+        $this->db->from('barang');
+        $this->db->where('id_barang !=', $id_barang);
+        $this->db->where('harga');
+        $query = $this->db->get();
+        return $query;
     }
 
     public function get($table)
@@ -57,6 +42,15 @@ class Base_model extends CI_Model
         // $this->db->order_by($order);
         $sql = $this->db->get($table);
         return $sql;
+    }
+
+    public function getBarang($table, $data = null, $where = null)
+    {
+        if ($data != null) {
+            return $this->db->get_where($table, $data)->row_array();
+        } else {
+            return $this->db->get_where($table, $where)->result_array();
+        }
     }
 
     public function getTotal()
@@ -185,5 +179,15 @@ class Base_model extends CI_Model
     public function delete($table, $pk, $id)
     {
         return $this->db->delete($table, [$pk => $id]);
+    }
+
+    public function cekHarga($id)
+    {
+        // $this->db->join('satuan s', 'b.satuan_id=s.id_satuan');
+        $this->db->select('*');
+        $this->db->from('barang');
+        $this->db->where(['id_barang' => $id]);
+        $query = $this->db->get()->row_array();
+        return $query;
     }
 }

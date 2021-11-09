@@ -64,4 +64,11 @@ class Sepatu extends CI_Controller
 		$this->base_model->del('barang', $where);
 		redirect('sepatu');
 	}
+
+    public function getHarga($id)
+    {
+        // $id = encode_php_tags($getId);
+        $query = $this->base_model->cekHarga($id);
+        output_json($query);
+    }
 }

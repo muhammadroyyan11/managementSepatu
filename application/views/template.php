@@ -10,8 +10,8 @@
     <meta name="author" content="">
 
     <title><?= $title ?></title>
- <!-- Custom fonts for this template-->
- <link href="<?= base_url(); ?>assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom fonts for this template-->
+    <link href="<?= base_url(); ?>assets/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="<?= base_url(); ?>assets/css/fonts.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
@@ -25,6 +25,7 @@
     <link href="<?= base_url(); ?>assets/vendor/datatables/buttons/css/buttons.bootstrap4.min.css" rel="stylesheet">
     <link href="<?= base_url(); ?>assets/vendor/datatables/responsive/css/responsive.bootstrap4.min.css" rel="stylesheet">
     <link href="<?= base_url(); ?>assets/vendor/gijgo/css/gijgo.min.css" rel="stylesheet">
+    <link href="<?= base_url(); ?>assets/dist/css/bootstrap-select.css" rel="stylesheet">
 
     <style>
         #accordionSidebar,
@@ -56,7 +57,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= site_url('dashboard')?>">
+                <a class="nav-link" href="<?= site_url('dashboard') ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -71,13 +72,13 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= site_url('sepatu')?>">
+                <a class="nav-link" href="<?= site_url('sepatu') ?>">
                     <i class="fas fa-fw fa-shopping-bag"></i>
                     <span>Data Sepatu</span></a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?= site_url('penjualan')?>">
+                <a class="nav-link" href="<?= site_url('transaksi') ?>">
                     <i class="fas fa-fw fa-shopping-cart"></i>
                     <span>Entry Penjualan</span></a>
             </li>
@@ -92,7 +93,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link" href="<?= site_url('laporan')?>">
+                <a class="nav-link" href="<?= site_url('laporan') ?>">
                     <i class="fas fa-fw fa-file"></i>
                     <span>Laporan</span></a>
             </li>
@@ -104,7 +105,7 @@
             </div>
 
             <li class="nav-item">
-                <a class="nav-link" href="<?= site_url('user')?>">
+                <a class="nav-link" href="<?= site_url('user') ?>">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Users</span></a>
             </li>
@@ -180,7 +181,9 @@
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Management Sepatu <script>document.write(new Date().getFullYear())</script></span>
+                        <span>Copyright &copy; Management Sepatu <script>
+                                document.write(new Date().getFullYear())
+                            </script></span>
                     </div>
                 </div>
             </footer>
@@ -216,8 +219,8 @@
         </div>
     </div>
 
-     <!-- Bootstrap core JavaScript-->
-     <script src="<?= base_url(); ?>assets/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="<?= base_url(); ?>assets/vendor/jquery/jquery.min.js"></script>
     <script src="<?= base_url(); ?>assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
@@ -245,8 +248,10 @@
     <script src="<?= base_url(); ?>assets/vendor/datatables/responsive/js/responsive.bootstrap4.min.js"></script>
 
     <script src="<?= base_url(); ?>assets/vendor/gijgo/js/gijgo.min.js"></script>
+    <script src="<?= base_url(); ?>assets/dist/js/bootstrap-select.min.js"></script>
 
-    <script type="text/javascript"> 
+
+    <script type="text/javascript">
         $(function() {
             $('.date').datepicker({
                 uiLibrary: 'bootstrap4',
@@ -301,31 +306,67 @@
     <script type="text/javascript">
         let hal = '<?= $this->uri->segment(1); ?>';
 
-        let satuan = $('#satuan');
-        let stok = $('#stok');
-        let total = $('#total_stok');
-        let jumlah = hal == 'barangmasuk' ? $('#jumlah_masuk') : $('#jumlah_keluar');
+        // let satuan = $('#satuan');
+        let harga = $('#harga');
+        let total = $('#total_harga');
+        // let stok = $('stok');
+        let jumlah = hal == 'transaksi' ? $('#jumlah') : $('#jumlah_keluar');
 
         $(document).on('change', '#barang_id', function() {
-            let url = '<?= base_url('barang/getstok/'); ?>' + this.value;
+            let url = '<?= base_url('sepatu/getHarga/'); ?>' + this.value;
             $.getJSON(url, function(data) {
-                satuan.html(data.nama_satuan);
-                stok.val(data.stok);
-                total.val(data.stok);
+                harga.val(data.harga);
+                total.val(data.harga);
+
                 jumlah.focus();
             });
         });
 
-        $(document).on('keyup', '#jumlah_masuk', function() {
-            let totalStok = parseInt(stok.val()) + parseInt(this.value);
-            total.val(Number(totalStok));
+        $(document).on('keyup', '#jumlah', function() {
+            let totalHarga = parseInt(harga.val()) * parseInt(this.value);
+            // let sisaStok = parseInt(stok.val()) - parseInt(this.value);
+            // total.val(Number(sisaStok));
+            total.val(Number(totalHarga));
         });
 
-        $(document).on('keyup', '#jumlah_keluar', function() {
-            let totalStok = parseInt(stok.val()) - parseInt(this.value);
-            total.val(Number(totalStok));
-        });
+        // $(document).on('keyup', '#jumlah', function() {
+        //     let sisaStok = parseInt(stok.val()) - parseInt(this.value);
+        //     total.val(Number(sisaStok));
+        // });
     </script>
+
+    <!-- <script type="text/javascript">
+        let hal = '<?= $this->uri->segment(1); ?>';
+
+        // let satuan = $('#satuan');
+        let stok = $('#stock');
+        let total = $('#total_stok');
+        // let stok = $('stok');
+        let jumlah = hal == 'transaksi' ? $('#jumlah') : $('#jumlah_keluar');
+
+        $(document).on('change', '#barang_id', function() {
+            let url = '<?= base_url('sepatu/getHarga/'); ?>' + this.value;
+            $.getJSON(url, function(data) {
+                stok.val(data.stok);
+                // harga.val(data.harga);
+                total.val(data.stok);
+
+                jumlah.focus();
+            });
+        });
+
+        $(document).on('keyup', '#jumlah', function() {
+            let totalHarga = parseInt(harga.val()) * parseInt(this.value);
+            let sisaStok = parseInt(stok.val()) - parseInt(this.value);
+            total.val(Number(sisaStok));
+            total.val(Number(totalHarga));
+        });
+
+        // $(document).on('keyup', '#jumlah', function() {
+        //     let sisaStok = parseInt(stok.val()) - parseInt(this.value);
+        //     total.val(Number(sisaStok));
+        // });
+    </script> -->
 
     <?php if ($this->uri->segment(1) == 'dashboard') : ?>
         <!-- Chart -->
