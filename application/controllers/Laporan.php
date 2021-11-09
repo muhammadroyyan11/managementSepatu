@@ -7,93 +7,118 @@ class Laporan extends CI_Controller
     {
         parent::__construct();
         // cek_login();
-
+        date_default_timezone_set('Asia/Jakarta');
         $this->load->model('Base_model', 'base');
         $this->load->library('form_validation');
     }
 
     public function index()
     {
-        $this->form_validation->set_rules('transaksi', 'Transaksi', 'required|in_list[barang_masuk,barang_keluar]');
+        $this->form_validation->set_rules('transaksi', 'Transaksi', 'required|in_list[masuk,transaksi]');
         $this->form_validation->set_rules('tanggal', 'Periode Tanggal', 'required');
 
         if ($this->form_validation->run() == false) {
             $data['title'] = "Laporan Transaksi";
             $this->template->load('template', 'laporan/form', $data);
         } else {
+
             $input = $this->input->post(null, true);
             $table = $input['transaksi'];
             $tanggal = $input['tanggal'];
             $pecah = explode(' - ', $tanggal);
+            $dateMasuk = new DateTime();
+            $dateKeluar = new DateTime();
             $mulai = date('Y-m-d', strtotime($pecah[0]));
             $akhir = date('Y-m-d', strtotime(end($pecah)));
 
             $query = '';
-            if ($table == 'barang') {
-                $query = $this->base_model->get('barang')->result();
+            if ($table == 'masuk') {
+                // $query = $this->base->getBarangMasuk(null, null, ['mulai' => $mulai, 'akhir' => $akhir]);
+                $query = $this->base_model->get('barang')->result_array();
+                //$data['categori'] = $this->base_model->get('categori');
             } else {
-                $query = $this->base->getBarangKeluar(null, null, ['mulai' => $mulai, 'akhir' => $akhir]);
+                $query = $this->base_model->joinBarang()->result_array();
             }
+            $dateMasuk = new DateTime($mulai);
+            $dateKeluar = new DateTime($akhir);
+            $newMulai = $dateMasuk->format('d F Y');
+            $newKeluar = $dateKeluar->format('d F Y');
+            $this->_cetak($query, $table, $tanggal, $newKeluar, $newMulai);
 
-            $this->_cetak($query, $table, $tanggal);
+            // print_r($query);
         }
     }
 
-    private function _cetak($data, $table_, $tanggal)
+    private function _cetak($data, $table_, $tanggal, $newKeluar, $newMulai)
     {
         $this->load->library('CustomPDF');
-        $table = $table_ == 'barang_masuk' ? 'Barang Masuk' : 'Barang Keluar';
+        $table = $table_ == 'masuk' ? 'Barang Masuk' : 'Transaksi';
+        // $dateMasuk = new DateTime($tanggal);
+
+        error_reporting(0);
 
         $pdf = new FPDF();
-        $pdf->AddPage('P', 'Letter');
+        $pdf->AddPage('P', 'A4');
         $pdf->SetFont('Times', 'B', 16);
         $pdf->Cell(190, 7, 'Laporan ' . $table, 0, 1, 'C');
+        $pdf->Ln();
+
         $pdf->SetFont('Times', '', 10);
-        $pdf->Cell(190, 4, 'Tanggal : ' . $tanggal, 0, 1, 'C');
+        $pdf->Cell(25, 7, 'Tanggal', 0, 0, 'L');
+        $pdf->Cell(3, 7, ':', 0, 0, 'L');
+        $pdf->Cell(60, 7, $newMulai . ' - ' . $newKeluar, 0, 1, 'L');
+        // $pdf->Ln();
+        $pdf->SetFont('Times', '', 10);
+        $pdf->Cell(25, 7, 'Nama User', 0, 0, 'L');
+        $pdf->Cell(3, 7, ':', 0, 0, 'L');
+        $pdf->Cell(60, 7, userdata('nama'), 0, 0, 'L');
         $pdf->Ln(10);
+        $pdf->SetFont('Times', 'B', 11);
 
-        $pdf->SetFont('Arial', 'B', 10);
-
-        if ($table_ == 'barang_masuk') :
+        if ($table_ == 'masuk') :
             $pdf->Cell(10, 7, 'No.', 1, 0, 'C');
-            $pdf->Cell(25, 7, 'Tgl Masuk', 1, 0, 'C');
-            $pdf->Cell(35, 7, 'ID Transaksi', 1, 0, 'C');
-            $pdf->Cell(55, 7, 'Nama Barang', 1, 0, 'C');
-            $pdf->Cell(40, 7, 'Supplier', 1, 0, 'C');
-            $pdf->Cell(30, 7, 'Jumlah Masuk', 1, 0, 'C');
+            $pdf->Cell(90, 7, 'Nama Barang', 1, 0, 'C');
+            $pdf->Cell(35, 7, 'Stok', 1, 0, 'C');
+            $pdf->Cell(55, 7, 'Harga Jual', 1, 0, 'C');
             $pdf->Ln();
 
             $no = 1;
             foreach ($data as $d) {
-                $pdf->SetFont('Arial', '', 10);
+                $pdf->SetFont('Times', '', 11);
                 $pdf->Cell(10, 7, $no++ . '.', 1, 0, 'C');
-                $pdf->Cell(25, 7, $d['tanggal_masuk'], 1, 0, 'C');
-                $pdf->Cell(35, 7, $d['id_barang_masuk'], 1, 0, 'C');
-                $pdf->Cell(55, 7, $d['nama_barang'], 1, 0, 'L');
-                $pdf->Cell(40, 7, $d['nama_supplier'], 1, 0, 'L');
-                $pdf->Cell(30, 7, $d['jumlah_masuk'] . ' ' . $d['nama_satuan'], 1, 0, 'C');
-                $pdf->Ln();
-            } else :
-            $pdf->Cell(10, 7, 'No.', 1, 0, 'C');
-            $pdf->Cell(25, 7, 'Tgl Keluar', 1, 0, 'C');
-            $pdf->Cell(35, 7, 'ID Transaksi', 1, 0, 'C');
-            $pdf->Cell(95, 7, 'Nama Barang', 1, 0, 'C');
-            $pdf->Cell(30, 7, 'Jumlah Keluar', 1, 0, 'C');
-            $pdf->Ln();
-
-            $no = 1;
-            foreach ($data as $d) {
-                $pdf->SetFont('Arial', '', 10);
-                $pdf->Cell(10, 7, $no++ . '.', 1, 0, 'C');
-                $pdf->Cell(25, 7, $d['tanggal_keluar'], 1, 0, 'C');
-                $pdf->Cell(35, 7, $d['id_barang_keluar'], 1, 0, 'C');
-                $pdf->Cell(95, 7, $d['nama_barang'], 1, 0, 'L');
-                $pdf->Cell(30, 7, $d['jumlah_keluar'] . ' ' . $d['nama_satuan'], 1, 0, 'C');
+                $pdf->Cell(90, 7, $d['nama'], 1, 0, 'L');
+                $pdf->Cell(35, 7, $d['stok'], 1, 0, 'C');
+                $pdf->Cell(55, 7, 'Rp . ' . number_format($d['harga']), 1, 0, 'L');
                 $pdf->Ln();
             }
-        endif;
+        else :
+            $pdf->Cell(10, 7, 'No.', 1, 0, 'C');
+            $pdf->Cell(55, 7, 'Nama Barang', 1, 0, 'C');
+            $pdf->Cell(35, 7, 'Harga Jual', 1, 0, 'C');
+            $pdf->Cell(55, 7, 'Jumlah Beli', 1, 0, 'C');
+            $pdf->Cell(40, 7, 'Total Bayar', 1, 0, 'C');
+            $pdf->Ln();
 
-        $file_name = $table . ' ' . $tanggal;
+            $no = 1;
+            $subtotal = 0;
+            foreach ($data as $d) {
+                $dateMasuk = new DateTime($d['date']);
+                $pdf->SetFont('Times', '', 11);
+                $pdf->Cell(10, 7, $no++ . '.', 1, 0, 'C');
+                $pdf->Cell(55, 7, $d['nama'], 1, 0, 'C');
+                $pdf->Cell(35, 7, 'Rp . ' . number_format($d['harga']), 1, 0, 'C');
+                $pdf->Cell(55, 7, $d['jumlah'], 1, 0, 'C');
+                $pdf->Cell(40, 7, 'Rp . ' . number_format($d['total']), 1, 0, 'R');
+                $pdf->Ln();
+            }
+            //echo "Ini keluar";
+
+            $pdf->SetFont('Times', 'B', 11);
+            $pdf->Cell(155, 7, 'Total   ', 0, 0, 'R');
+            $pdf->Cell(40, 7, 'Rp . ' . number_format($subtotal), 1, 0, 'R');
+            $pdf->Ln();
+        endif;
+        $file_name = userdata('nama') . ' ' . $table . '-' . $tanggal;
         $pdf->Output('I', $file_name);
     }
 }
