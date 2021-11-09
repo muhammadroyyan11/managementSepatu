@@ -45,12 +45,7 @@ class Transaksi extends CI_Controller
 
         $row = $this->db->query("SELECT * FROM barang")->row();
 
-        // $this->db->insert('transaksi', array(
-        //     'jumlah' => $jumlah,
-        //     'total' => $total,
-        //     'tanggal' => $tanggal,
-        //     'id_barang' => $id_barang
-        // ));
+       
         $data = array(
             'jumlah' => $jumlah,
             'total' => $total,
@@ -67,24 +62,12 @@ class Transaksi extends CI_Controller
 			// );
             set_pesan('Jumlah Melebihi Stok', false);
 		} else {
+            $kurangi = $row->stok - $jumlah;
 			$this->db->insert('transaksi', $data);
+            $this->db->update('barang', array('stok' => $kurangi ), array('id_barang' =>$row->id_barang));
             set_pesan('Data berhasil di simpan');
 			
 		}
-
-
-        // if ($this->db->affected_rows()) {
-        //     $this->data = array(
-        //         'status' => true,
-        //         'message' => "Data berhasil disimpan"
-        //     );
-        // } else {
-        //     $this->data = array(
-        //         'status' => false,
-        //         'message' => "Gagal saat menyimpan data!"
-        //     );
-        // }
-
         redirect('transaksi');
     }
 
