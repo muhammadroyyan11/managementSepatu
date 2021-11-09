@@ -335,6 +335,27 @@
         // });
     </script>
 
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '#set_dtl1', function() {
+                var nama = $(this).data('nama');
+                var stok = $(this).data('stok');
+                var harga = $(this).data('harga');
+
+                // var stock = stok.toString();
+                $('#nama').text(nama);
+                $('#stok').text(stock);
+                $('#harga').text(harga);
+                // $('#stok').parseInt(stok);
+                // var stok = $(this).data('stok');;
+                // var str = stok.toString();
+
+                // console.log(stok); // 24
+                // console.log(str); // "24"
+            })
+        })
+    </script>
+
     <!-- <script type="text/javascript">
         let hal = '<?= $this->uri->segment(1); ?>';
 

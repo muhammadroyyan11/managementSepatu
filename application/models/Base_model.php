@@ -13,13 +13,34 @@ class Base_model extends CI_Model
         }
     }
 
-    public function joinBarang(){
+    public function joinBarang($where = null)
+    {
+        if ($where != null) {
+            $this->db->select('*');
+            $this->db->from('transaksi');
+            $this->db->join('barang', 'barang.id_barang = transaksi.id_barang');
+            $this->db->where($where);
+            $query = $this->db->get();
+            return $query;
+        } else {
+            $this->db->select('*');
+            $this->db->from('transaksi');
+            $this->db->join('barang', 'barang.id_barang = transaksi.id_barang');
+            // $this->db->where($where);
+            $query = $this->db->get();
+            return $query;
+        }
+    }
+
+    public function get_join()
+    {
         $this->db->select('*');
         $this->db->from('transaksi');
-        $this->db->join('barang','barang.id_barang = transaksi.id_barang');
-        $query = $this->db->get();
-        return $query;
-     }
+        $this->db->join('barang', 'barang.id_barang = transaksi.id_barang');
+        // $this->db->order_by($order, $az);
+        $sql = $this->db->get();
+        return $sql;
+    }
 
     public function getBarangById($id_barang)
     {
@@ -63,29 +84,6 @@ class Base_model extends CI_Model
         return $query;
     }
 
-    public function getCash($table, $order , $where)
-    {
-       // $tanggal = date('Y-m-d');
-       $this->db->select('*');
-       $this->db->from($table);
-       $this->db->where($where);
-       $this->db->order_by($order, 'DESC');
-       $query = $this->db->get();
-       return $query;
-    }
-
-    public function get_uang($table, $order , $where)
-    {
-        // $tanggal = date('Y-m-d');
-        $this->db->select('*');
-        $this->db->from($table);
-        $this->db->where($where);
-        $this->db->order_by($order, 'DESC');
-        $this->db->limit(5);
-        $query = $this->db->get();
-        return $query;
-    }
-
     public function get_max_id($table, $field, $where)
     {
         $this->db->select_max($field);
@@ -114,27 +112,8 @@ class Base_model extends CI_Model
         $this->db->where($where);
         $this->db->update($table, $data);
     }
-    public function get_join()
-    {
-        $this->db->select('*');
-        $this->db->from('cash_balance');
-        $this->db->join('user', 'user.id_user = cash_balance.id_user');
-        // $this->db->order_by($order, $az);
-        $sql = $this->db->get();
-        return $sql;
-    }
-    public function get_join2()
-    {
-        $login = $this->session->userdata('id_user');
-        $this->db->select('user.id, onlineform.date, onlineform.day, onlineform.in1, 
-        onlineform.out1, onlineform.in2, onlineform.out2');
-        $this->db->from('user');
-        $this->db->join('cash_balance', 'cash_balace.id = user.id');
-        $this->db->where('id_user', $login);
-        // $this->db->order_by($order, $az);
-        $sql = $this->db->get();
-        return $sql;
-    }
+
+
     public function join_multiple($table, $join, $pq, $join1, $pq1, $order, $az)
     {
         $this->db->select('*');
@@ -145,6 +124,7 @@ class Base_model extends CI_Model
         $sql = $this->db->get();
         return $sql;
     }
+
     public function get_id($table, $where)
     {
         $this->db->where($where);

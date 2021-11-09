@@ -71,6 +71,29 @@ class Transaksi extends CI_Controller
         redirect('transaksi');
     }
 
+    public function detail($id)
+    {
+        $this->_validasi();
+
+        if ($this->form_validation->run() == false) {
+            $data['title'] = "Detail Transaksi";
+            // $data['barang'] = $this->base->getBarang('barang', ['id_barang' => $id]);
+            // $data['transaksi'] = $this->base->getBarang('transaksi', ['id_transaksi' => $id]);
+            $data['transaksi'] = $this->base_model->joinBarang(['id_transaksi' => $id])->row_array();
+            $this->template->load('template', 'transaksi/detail', $data);
+        } else {
+            $input = $this->input->post(null, true);
+            $update = $this->base->update('barang', 'id_barang', $id, $input);
+            if ($update) {
+                set_pesan('data berhasil disimpan');
+                redirect('sepatu');
+            } else {
+                set_pesan('data gagal disimpan', false);
+                redirect('sepatu/add');
+            }
+        }
+    }
+
     public function delete($id){
 		$where=array('id_transaksi' => $id);
 		$this->base_model->del('transaksi', $where);

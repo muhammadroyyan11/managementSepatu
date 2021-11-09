@@ -45,8 +45,8 @@
                         <td><?= ' Rp. ' . number_format($data->total)  ?></td>
                         <td><?= $data->tanggal ?></td>
                         <td>
-                            <a href="#" class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#detailModal"><i class="fa fa-eye"></i></a>
-                            <a href="<?= base_url('transaksi/edit/') . $data->id_barang ?>" class="btn btn-warning btn-circle btn-sm"><i class="fa fa-edit"></i></a>
+                            <a href="<?= base_url('transaksi/detail/') . $data->id_transaksi ?>" class="btn btn-success btn-circle btn-sm"><i class="fa fa-eye"></i></a>
+                            <!-- <a href="<?= base_url('transaksi/edit/') . $data->id_transaksi ?>" class="btn btn-warning btn-circle btn-sm"><i class="fa fa-edit"></i></a> -->
                             <a onclick="return confirm('Yakin ingin hapus?')" href="<?= base_url('transaksi/delete/') . $data->id_barang ?>" class="btn btn-danger btn-circle btn-sm"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>

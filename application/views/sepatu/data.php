@@ -41,8 +41,8 @@
                         <td><?= $data->stok ?></td>
                         <td><?= ' Rp. ' . number_format($data->harga)  ?></td>
                         <td>
-                            <a href="#" class="btn btn-success btn-circle btn-sm" data-toggle="modal" data-target="#detailModal"><i class="fa fa-eye"></i></a>
-                            <a href="<?= base_url('sepatu/edit/') . $data->id_barang?>" class="btn btn-warning btn-circle btn-sm"><i class="fa fa-edit"></i></a>
+                            <a href="<?= base_url('sepatu/detail/') . $data->id_barang ?>" id="set_dtl1" class="btn btn-success btn-circle btn-sm"><i class="fa fa-eye"></i></a>
+                            <a href="<?= base_url('sepatu/edit/') . $data->id_barang ?>" class="btn btn-warning btn-circle btn-sm"><i class="fa fa-edit"></i></a>
                             <a onclick="return confirm('Yakin ingin hapus?')" href="<?= base_url('sepatu/delete/') . $data->id_barang ?>" class="btn btn-danger btn-circle btn-sm"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
@@ -95,6 +95,70 @@
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Detail Modal
+<div class="modal fade" id="detailModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail Data Sepatu</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body table-responsive">
+                <div class="card-body">
+                    <?= $this->session->flashdata('pesan'); ?>
+                    <table class="table table-bordered no-margin">
+                        <tbody>
+                            <tr>
+                                <th style="width: 35%;">Nama</th>
+                                <td><span id="nama"></span></td>
+                            </tr>
+                            <tr>
+                                <th style="width: 35%;">Stok</th>
+                                <td><span id="nama"></span></td>
+                            </tr>
+                            <tr>
+                                <th style="width: 35%;">Harga</th>
+                                <td><span id="harga"></span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<div class="modal fade" id="detailModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4>Detail Barang</h4>
+            </div>
+            <div class="modal-body table-responsive">
+                <table class="table table-bordered no-margin">
+                    <tbody>
+                        <tr>
+                            <th style="width: 35%;">Nama</th>
+                            <td><span id="nama"></span></td>
+                        </tr>
+                        <tr>
+                            <th style="width: 35%;">stok</th>
+                            <td><span id="stok"></span></td>
+                        </tr>
+
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

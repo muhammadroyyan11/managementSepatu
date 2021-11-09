@@ -25,7 +25,7 @@ class Sepatu extends CI_Controller
 
     private function _validasi()
     {
-        $this->form_validation->set_rules('nama_barang', 'Nama barang', 'required|trim');
+        $this->form_validation->set_rules('nama', 'Nama barang', 'required|trim');
         $this->form_validation->set_rules('stok', 'Stok', 'required|trim');
         $this->form_validation->set_rules('harga', 'Harga', 'required|trim');
     }
@@ -49,11 +49,13 @@ class Sepatu extends CI_Controller
                 'status' => true,
                 'message' => "Data berhasil disimpan"
             );
+            set_pesan('Data berhasil di simpan');
         } else {
             $this->data = array(
                 'status' => false,
                 'message' => "Gagal saat menyimpan data!"
             );
+            set_pesan('Gagal saat menyimpan data', false);
         }
 
         redirect('sepatu');
@@ -64,6 +66,48 @@ class Sepatu extends CI_Controller
 		$this->base_model->del('barang', $where);
 		redirect('sepatu');
 	}
+
+    public function edit($id)
+    {
+        $this->_validasi();
+
+        if ($this->form_validation->run() == false) {
+            $data['title'] = "Edit Barang";
+            $data['barang'] = $this->base->getBarang('barang', ['id_barang' => $id]);
+            $this->template->load('template', 'sepatu/edit', $data);
+        } else {
+            $input = $this->input->post(null, true);
+            $update = $this->base->update('barang', 'id_barang', $id, $input);
+            if ($update) {
+                set_pesan('data berhasil disimpan');
+                redirect('sepatu');
+            } else {
+                set_pesan('data gagal disimpan', false);
+                redirect('sepatu/add');
+            }
+        }
+    }
+
+    public function detail($id)
+    {
+        $this->_validasi();
+
+        if ($this->form_validation->run() == false) {
+            $data['title'] = "Edit Barang";
+            $data['barang'] = $this->base->getBarang('barang', ['id_barang' => $id]);
+            $this->template->load('template', 'sepatu/detail', $data);
+        } else {
+            $input = $this->input->post(null, true);
+            $update = $this->base->update('barang', 'id_barang', $id, $input);
+            if ($update) {
+                set_pesan('data berhasil disimpan');
+                redirect('sepatu');
+            } else {
+                set_pesan('data gagal disimpan', false);
+                redirect('sepatu/add');
+            }
+        }
+    }
 
     public function getHarga($id)
     {
