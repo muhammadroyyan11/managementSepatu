@@ -67,7 +67,7 @@ class User extends CI_Controller
             ];
 
             if ($this->base->insert('user', $input_data)) {
-                set_pesan('data berhasil disimpan.');
+                set_pesan('data berhasil disimpan. Silahkan klik tombol aktivasi untuk mengaktifkan User');
                 redirect('user');
             } else {
                 set_pesan('data gagal disimpan', false);
