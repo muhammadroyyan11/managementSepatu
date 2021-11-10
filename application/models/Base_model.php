@@ -42,6 +42,21 @@ class Base_model extends CI_Model
         return $sql;
     }
 
+    public function getDay($id = null)
+    {
+        $nowDate = date('Y-m-d');
+        $this->db->select('*');
+        $this->db->from('transaksi');
+        $this->db->where('tanggal', $nowDate);
+        $this->db->join('barang', 'barang.id_barang=transaksi.id_barang');
+        $this->db->order_by('id_transaksi', 'DESC');
+        if ($id != null) {
+            $this->db->where('id_transaksi', $id);
+        }
+        $query = $this->db->get();
+        return $query;
+    }
+
     public function getUsers()
     {
         /**

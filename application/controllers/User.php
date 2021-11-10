@@ -76,9 +76,9 @@ class User extends CI_Controller
         }
     }
 
-    public function edit($getId)
+    public function edit($id)
     {
-        $id = encode_php_tags($getId);
+        // $id = encode_php_tags($getId);
         $this->_validasi('edit');
 
         if ($this->form_validation->run() == false) {
@@ -105,10 +105,9 @@ class User extends CI_Controller
         }
     }
 
-    public function delete($getId)
+    public function delete($id)
     {
-        $id = encode_php_tags($getId);
-        if ($this->admin->delete('user', 'id_user', $id)) {
+        if ($this->base->delete('user', 'id_user', $id)) {
             set_pesan('data berhasil dihapus.');
         } else {
             set_pesan('data gagal dihapus.', false);
@@ -116,9 +115,8 @@ class User extends CI_Controller
         redirect('user');
     }
 
-    public function toggle($getId)
+    public function toggle($id)
     {
-        $id = encode_php_tags($getId);
         $status = $this->admin->get('user', ['id_user' => $id])['is_active'];
         $toggle = $status ? 0 : 1; //Jika user aktif maka nonaktifkan, begitu pula sebaliknya
         $pesan = $toggle ? 'user diaktifkan.' : 'user dinonaktifkan.';
