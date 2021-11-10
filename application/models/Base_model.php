@@ -42,7 +42,7 @@ class Base_model extends CI_Model
         return $sql;
     }
 
-    public function getBarangById($id_barang)
+    public function getUsers()
     {
         /**
          * ID disini adalah untuk data yang tidak ingin ditampilkan. 
@@ -51,9 +51,8 @@ class Base_model extends CI_Model
          * pada managemen data user
          */
         $this->db->select('*');
-        $this->db->from('barang');
-        $this->db->where('id_barang !=', $id_barang);
-        $this->db->where('harga');
+        $this->db->from('user');
+        // $this->db->where('id_user !=', $id);
         $query = $this->db->get();
         return $query;
     }

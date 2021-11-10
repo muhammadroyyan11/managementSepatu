@@ -98,6 +98,8 @@
                     <span>Laporan</span></a>
             </li>
 
+            <?php if (is_admin()) : ?>
+
             <hr class="sidebar-divider">
 
             <div class="sidebar-heading">
@@ -110,6 +112,7 @@
                     <span>Users</span></a>
             </li>
 
+            <?php endif; ?>
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
@@ -139,8 +142,8 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
-                                <img class="img-profile rounded-circle" src="img/undraw_profile.svg">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= userdata('nama')?></span>
+                                <img class="img-profile rounded-circle" src="<?= base_url() ?>assets/img/avatar/<?= userdata('foto'); ?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -213,7 +216,7 @@
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="<?= base_url('logout'); ?>">Logout</a>
                 </div>
             </div>
         </div>
@@ -246,6 +249,7 @@
     <script src="<?= base_url(); ?>assets/vendor/datatables/buttons/js/buttons.colVis.min.js"></script>
     <script src="<?= base_url(); ?>assets/vendor/datatables/responsive/js/dataTables.responsive.min.js"></script>
     <script src="<?= base_url(); ?>assets/vendor/datatables/responsive/js/responsive.bootstrap4.min.js"></script>
+
 
     <script src="<?= base_url(); ?>assets/vendor/gijgo/js/gijgo.min.js"></script>
     <script src="<?= base_url(); ?>assets/dist/js/bootstrap-select.min.js"></script>

@@ -6,7 +6,7 @@ class Laporan extends CI_Controller
     public function __construct()
     {
         parent::__construct();
-        // cek_login();
+        cek_login();
         date_default_timezone_set('Asia/Jakarta');
         $this->load->model('Base_model', 'base');
         $this->load->library('form_validation');
