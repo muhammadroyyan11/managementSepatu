@@ -12,6 +12,7 @@ class Base_model extends CI_Model
             return $this->db->get_where($table, $where)->result_array();
         }
     }
+    
 
     public function joinBarang($where = null)
     {

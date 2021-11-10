@@ -117,11 +117,11 @@ class User extends CI_Controller
 
     public function toggle($id)
     {
-        $status = $this->admin->get('user', ['id_user' => $id])['is_active'];
+        $status = $this->base->getUser('user', ['id_user' => $id])['is_active'];
         $toggle = $status ? 0 : 1; //Jika user aktif maka nonaktifkan, begitu pula sebaliknya
         $pesan = $toggle ? 'user diaktifkan.' : 'user dinonaktifkan.';
 
-        if ($this->admin->update('user', 'id_user', $id, ['is_active' => $toggle])) {
+        if ($this->base->update('user', 'id_user', $id, ['is_active' => $toggle])) {
             set_pesan($pesan);
         }
         redirect('user');

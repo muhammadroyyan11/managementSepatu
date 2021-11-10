@@ -78,7 +78,7 @@ class Auth extends CI_Controller
 
         if ($this->form_validation->run() == false) {
             $data['title'] = 'Buat Akun';
-            $this->template->load('templates/auth', 'auth/register', $data);
+            $this->template->load('auth', 'auth/register', $data);
         } else {
             $input = $this->input->post(null, true);
             unset($input['password2']);
@@ -91,7 +91,7 @@ class Auth extends CI_Controller
             $query = $this->base->insert('user', $input);
             if ($query) {
                 set_pesan('daftar berhasil. Selanjutnya silahkan hubungi admin untuk mengaktifkan akun anda.');
-                redirect('login');
+                redirect('auth');
             } else {
                 set_pesan('gagal menyimpan ke database', false);
                 redirect('register');
