@@ -116,7 +116,7 @@ class Laporan extends CI_Controller
 
             $pdf->SetFont('Times', 'B', 11);
             $pdf->Cell(160, 7, 'Total   ', 0, 0, 'R');
-            $pdf->Cell(30, 7, 'Rp . ' . number_format($subtotal), 1, 0, 'R');
+            $pdf->Cell(30, 7, 'Rp . ' . number_format($subtotal), 1, 0, 'L');
             $pdf->Ln();
         endif;
         $file_name = userdata('nama') . ' ' . $table . '-' . $tanggal;
