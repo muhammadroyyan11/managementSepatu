@@ -52,7 +52,7 @@ class Laporan extends CI_Controller
     private function _cetak($data, $table_, $tanggal, $newKeluar, $newMulai)
     {
         $this->load->library('CustomPDF');
-        $table = $table_ == 'masuk' ? 'Barang Masuk' : 'Transaksi';
+        $table = $table_ == 'masuk' ? 'Stok Barang' : 'Transaksi';
         // $dateMasuk = new DateTime($tanggal);
 
         error_reporting(0);
@@ -93,29 +93,30 @@ class Laporan extends CI_Controller
             }
         else :
             $pdf->Cell(10, 7, 'No.', 1, 0, 'C');
-            $pdf->Cell(55, 7, 'Nama Barang', 1, 0, 'C');
-            $pdf->Cell(35, 7, 'Harga Jual', 1, 0, 'C');
-            $pdf->Cell(55, 7, 'Jumlah Beli', 1, 0, 'C');
-            $pdf->Cell(40, 7, 'Total Bayar', 1, 0, 'C');
+            $pdf->Cell(100, 7, 'Nama Barang', 1, 0, 'C');
+            $pdf->Cell(35, 7, 'Tanggal', 1, 0, 'C');
+            $pdf->Cell(15, 7, 'qty', 1, 0, 'C');
+            $pdf->Cell(30, 7, 'Sub Total', 1, 0, 'C');
             $pdf->Ln();
 
             $no = 1;
             $subtotal = 0;
             foreach ($data as $d) {
-                $dateMasuk = new DateTime($d['date']);
+                $dateMasuk = new DateTime($d['tanggal']);
+                $subtotal += $d['total'];
                 $pdf->SetFont('Times', '', 11);
                 $pdf->Cell(10, 7, $no++ . '.', 1, 0, 'C');
-                $pdf->Cell(55, 7, $d['nama'], 1, 0, 'C');
-                $pdf->Cell(35, 7, 'Rp . ' . number_format($d['harga']), 1, 0, 'C');
-                $pdf->Cell(55, 7, $d['jumlah'], 1, 0, 'C');
-                $pdf->Cell(40, 7, 'Rp . ' . number_format($d['total']), 1, 0, 'R');
+                $pdf->Cell(100, 7, $d['nama'], 1, 0, 'L');
+                $pdf->Cell(35, 7, $dateMasuk->format('d F Y'), 1, 0, 'L');
+                $pdf->Cell(15, 7, $d['jumlah'], 1, 0, 'C');
+                $pdf->Cell(30, 7, 'Rp . ' . number_format($d['total']), 1, 0, 'L');
                 $pdf->Ln();
             }
             //echo "Ini keluar";
 
             $pdf->SetFont('Times', 'B', 11);
-            $pdf->Cell(155, 7, 'Total   ', 0, 0, 'R');
-            $pdf->Cell(40, 7, 'Rp . ' . number_format($subtotal), 1, 0, 'R');
+            $pdf->Cell(160, 7, 'Total   ', 0, 0, 'R');
+            $pdf->Cell(30, 7, 'Rp . ' . number_format($subtotal), 1, 0, 'R');
             $pdf->Ln();
         endif;
         $file_name = userdata('nama') . ' ' . $table . '-' . $tanggal;

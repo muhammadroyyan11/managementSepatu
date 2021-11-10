@@ -14,7 +14,7 @@
                     <div class="col-md-9">
                         <div class="custom-control custom-radio">
                             <input value="masuk" type="radio" id="masuk" name="transaksi" class="custom-control-input">
-                            <label class="custom-control-label" for="masuk">Barang Masuk</label>
+                            <label class="custom-control-label" for="masuk">Stok Barang</label>
                         </div>
                         <div class="custom-control custom-radio">
                             <input value="transaksi" type="radio" id="transaksi" name="transaksi" class="custom-control-input">
