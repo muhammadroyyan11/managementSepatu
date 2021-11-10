@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 10, 2021 at 09:47 AM
+-- Generation Time: Nov 10, 2021 at 10:28 AM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.3.28
 
@@ -30,7 +30,6 @@ SET time_zone = "+00:00";
 CREATE TABLE `barang` (
   `id_barang` int(11) NOT NULL,
   `nama` varchar(50) NOT NULL,
-  `tes` varchar(11) NOT NULL,
   `stok` int(11) NOT NULL,
   `harga` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -39,13 +38,13 @@ CREATE TABLE `barang` (
 -- Dumping data for table `barang`
 --
 
-INSERT INTO `barang` (`id_barang`, `nama`, `tes`, `stok`, `harga`) VALUES
-(2, 'Sepatu apik', 'TEEES', 50, 10000),
-(3, 'Rodok Apik', 'TEEES', 9, 9000),
-(4, 'Apik nemen', '', 100, 13500),
-(5, 'Iki elek', '', 8, 5000),
-(6, 'Fiber Optic Cable', '', 10, 10000),
-(7, 'Tes', '', 12, 10000);
+INSERT INTO `barang` (`id_barang`, `nama`, `stok`, `harga`) VALUES
+(2, 'Sepatu apik', 48, 10000),
+(3, 'Rodok Apik', 9, 9000),
+(4, 'Apik nemen', 100, 13500),
+(5, 'Iki elek', 8, 5000),
+(6, 'Fiber Optic Cable', 10, 10000),
+(7, 'Tes', 12, 10000);
 
 -- --------------------------------------------------------
 
@@ -71,7 +70,8 @@ INSERT INTO `transaksi` (`id_transaksi`, `jumlah`, `total`, `tanggal`, `id_baran
 (5, '2', '18000', '2021-11-09', 3),
 (6, '10', '100000', '2021-11-09', 2),
 (7, '2', '27000', '2021-11-09', 4),
-(8, '2', '20000', '2021-11-09', 2);
+(8, '2', '20000', '2021-11-09', 2),
+(9, '2', '18000', '2021-11-10', 3);
 
 -- --------------------------------------------------------
 
@@ -98,7 +98,7 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id_user`, `nama`, `username`, `email`, `no_telp`, `role`, `password`, `created_at`, `foto`, `is_active`) VALUES
 (1, 'Adminisitrator', 'admin', 'admin@admin.com', '025123456789', 'admin', '$2y$10$wMgi9s3FEDEPEU6dEmbp8eAAEBUXIXUy3np3ND2Oih.MOY.q/Kpoy', 1568689561, 'user.png', 1),
-(22, 'TES USER', 'tesUser', 'tes@gmail.com', '298301923', '', '$2y$10$I8se/XrM4aNQOn298hXjCunXnMp8ZEmSUj7mZW6uCYpoUgYXz1YXm', 1636532353, 'user.png', 0);
+(23, 'User', 'user', 'user@user.com', '1293', 'user', '$2y$10$.IeZEkEBPoAd.yGxD4VB4ORdYFZ/8Z/j5P63XxtKsHEwwTjr/pdxW', 1636535169, 'user.png', 0);
 
 --
 -- Indexes for dumped tables
@@ -137,13 +137,13 @@ ALTER TABLE `barang`
 -- AUTO_INCREMENT for table `transaksi`
 --
 ALTER TABLE `transaksi`
-  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_transaksi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
