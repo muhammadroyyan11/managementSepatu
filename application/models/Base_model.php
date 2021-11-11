@@ -12,7 +12,18 @@ class Base_model extends CI_Model
             return $this->db->get_where($table, $where)->result_array();
         }
     }
-    
+
+    public function getProfil($table, $where)
+    {
+        $this->db->select('*');
+        $this->db->from('user');
+        // $this->db->join('barang', 'barang.id_barang = transaksi.id_barang');
+        $this->db->where($where);
+        $query = $this->db->get()->result_array();
+        return $query;
+        // return $this->db->get_where($table, $where)->result_array();
+    }
+
 
     public function joinBarang($where = null)
     {
