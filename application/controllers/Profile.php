@@ -24,20 +24,20 @@ class Profile extends CI_Controller
         $this->template->load('template', 'profile/user', $data);
     }
 
-    private function _validasi()
-    {
-        $db = $this->base->getUser('user', ['id_user' => $this->input->post('id_user', true)]);
-        $username = $this->input->post('username', true);
-        $email = $this->input->post('email', true);
+    // private function _validasi()
+    // {
+    //     $db = $this->base->getUser('user', ['id_user' => $this->input->post('id_user', true)]);
+    //     $username = $this->input->post('username', true);
+    //     $email = $this->input->post('email', true);
 
-        $uniq_username = $db['username'] == $username ? '' : '|is_unique[user.username]';
-        $uniq_email = $db['email'] == $email ? '' : '|is_unique[user.email]';
+    //     $uniq_username = $db['username'] == $username ? '' : '|is_unique[user.username]';
+    //     $uniq_email = $db['email'] == $email ? '' : '|is_unique[user.email]';
 
-        $this->form_validation->set_rules('username', 'Username', 'required|trim|alpha_numeric' . $uniq_username);
-        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email' . $uniq_email);
-        $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
-        $this->form_validation->set_rules('no_telp', 'Nomor Telepon', 'required|trim|numeric');
-    }
+    //     $this->form_validation->set_rules('username', 'Username', 'required|trim|alpha_numeric' . $uniq_username);
+    //     $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email' . $uniq_email);
+    //     $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+    //     $this->form_validation->set_rules('no_telp', 'Nomor Telepon', 'required|trim|numeric');
+    // }
 
     private function _config()
     {
@@ -51,7 +51,18 @@ class Profile extends CI_Controller
 
     public function setting()
     {
-        $this->_validasi();
+        // $this->_validasi();
+        $username = $this->input->post('username', true);
+        $email = $this->input->post('email', true);
+
+        $db = $this->base->getUser('user', ['id_user' => $this->input->post('id_user', true)]);
+        $uniq_username = $db['username'] == $username ? '' : '|is_unique[user.username]';
+        $uniq_email = $db['email'] == $email ? '' : '|is_unique[user.email]';
+
+        $this->form_validation->set_rules('username', 'Username', 'required|trim|alpha_numeric' . $uniq_username);
+        $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email' . $uniq_email);
+        $this->form_validation->set_rules('nama', 'Nama', 'required|trim');
+        $this->form_validation->set_rules('no_telp', 'Nomor Telepon', 'required|trim|numeric');
         $this->_config();
 
         $userId = $this->session->userdata('login_session')['user'];
