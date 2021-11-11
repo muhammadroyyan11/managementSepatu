@@ -38,7 +38,7 @@ class Auth extends CI_Controller
                     $user_db = $this->auth->userdata($input['username']);
                     if ($user_db['is_active'] != 1) {
                         set_pesan('akun anda belum aktif/dinonaktifkan. Silahkan hubungi admin.', false);
-                        redirect('login');
+                        redirect('auth');
                     } else {
                         $userdata = [
                             'user'  => $user_db['id_user'],
