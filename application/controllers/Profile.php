@@ -56,8 +56,8 @@ class Profile extends CI_Controller
         $email = $this->input->post('email', true);
 
         $db = $this->base->getUser('user', ['id_user' => $this->input->post('id_user', true)]);
-        $uniq_username = $db['username'] == $username ? '' : '|is_unique[user.username]';
-        $uniq_email = $db['email'] == $email ? '' : '|is_unique[user.email]';
+        $uniq_username = $db['username'] == $username ? null : '|is_unique[user.username]';
+        $uniq_email = $db['email'] == $email ? null : '|is_unique[user.email]';
 
         $this->form_validation->set_rules('username', 'Username', 'required|trim|alpha_numeric' . $uniq_username);
         $this->form_validation->set_rules('email', 'Email', 'required|trim|valid_email' . $uniq_email);
