@@ -45,7 +45,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= site_url('dashboard')?>">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-shopping-bag"></i>
                 </div>
@@ -100,17 +100,17 @@
 
             <?php if (is_admin()) : ?>
 
-            <hr class="sidebar-divider">
+                <hr class="sidebar-divider">
 
-            <div class="sidebar-heading">
-                Management User
-            </div>
+                <div class="sidebar-heading">
+                    Management User
+                </div>
 
-            <li class="nav-item">
-                <a class="nav-link" href="<?= site_url('user') ?>">
-                    <i class="fas fa-fw fa-users"></i>
-                    <span>Users</span></a>
-            </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?= site_url('user') ?>">
+                        <i class="fas fa-fw fa-users"></i>
+                        <span>Users</span></a>
+                </li>
 
             <?php endif; ?>
 
@@ -142,14 +142,22 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= userdata('nama')?></span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= userdata('nama') ?></span>
                                 <img class="img-profile rounded-circle" src="<?= base_url() ?>assets/img/avatar/<?= userdata('foto'); ?>">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="<?= base_url('profile'); ?>">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="<?= base_url('profile/setting'); ?>">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
+                                </a>
+                                <a class="dropdown-item" href="<?= base_url('profile/ubahpassword'); ?>">
+                                    <i class="fas fa-lock fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Change Password
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
